@@ -38,7 +38,7 @@ def layout_fixed_boxes(context, pages):
 
 
 def layout_document(enable_hinting, style_for, get_image_from_uri, root_box,
-                    font_config):
+                    font_config, values):
     """Lay out the whole document.
 
     This includes line breaks, page breaks, absolute size and position for all
@@ -49,7 +49,7 @@ def layout_document(enable_hinting, style_for, get_image_from_uri, root_box,
 
     """
     context = LayoutContext(
-        enable_hinting, style_for, get_image_from_uri, font_config)
+        enable_hinting, style_for, get_image_from_uri, font_config, values)
     pages = list(make_all_pages(context, root_box))
     page_counter = [1]
     counter_values = {'page': page_counter, 'pages': [len(pages)]}
@@ -70,7 +70,7 @@ def layout_document(enable_hinting, style_for, get_image_from_uri, root_box,
 
 class LayoutContext(object):
     def __init__(self, enable_hinting, style_for, get_image_from_uri,
-                 font_config):
+                 font_config, values):
         self.enable_hinting = enable_hinting
         self.style_for = style_for
         self.get_image_from_uri = get_image_from_uri
@@ -78,6 +78,7 @@ class LayoutContext(object):
         self._excluded_shapes_lists = []
         self.excluded_shapes = None  # Not initialized yet
         self.string_set = defaultdict(lambda: defaultdict(lambda: list()))
+        self.values = values
         self.current_page = None
         self.strut_layouts = {}
 
@@ -98,6 +99,12 @@ class LayoutContext(object):
             self.excluded_shapes = self._excluded_shapes_lists[-1]
         else:
             self.excluded_shapes = None
+
+    def get_value_set_for(self, name, default):
+        if self.values and name in self.values:
+            return self.values[name]
+        else:
+            return default
 
     def get_string_set_for(self, name, keyword=None):
         """Resolve value of string function (as set by string set).

@@ -307,7 +307,7 @@ class Document(object):
     """
     @classmethod
     def _render(cls, html, stylesheets, enable_hinting,
-                presentational_hints=False):
+                presentational_hints=False, values = None):
         font_config = FontConfiguration()
         style_for = get_all_computed_styles(
             html, presentational_hints=presentational_hints, user_stylesheets=[
@@ -321,7 +321,7 @@ class Document(object):
             enable_hinting, style_for, get_image_from_uri,
             build_formatting_structure(
                 html.root_element, style_for, get_image_from_uri),
-            font_config)
+            font_config, values)
         rendering = cls(
             [Page(p, enable_hinting) for p in page_boxes],
             DocumentMetadata(**html._get_metadata()), html.url_fetcher)

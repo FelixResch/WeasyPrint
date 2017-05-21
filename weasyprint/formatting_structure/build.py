@@ -244,6 +244,9 @@ def content_to_boxes(style, parent_box, quote_depth, counter_values,
         elif type_ == 'string' and context is not None:
             text = context.get_string_set_for(*value)
             texts.append(text)
+        elif type_ == 'value' and context is not None:
+            text = context.get_value_set_for(value, '')
+            texts.append(text)
         else:
             assert type_ == 'QUOTE'
             is_open, insert = value

@@ -117,7 +117,7 @@ class HTML(object):
         return get_html_metadata(self.root_element)
 
     def render(self, stylesheets=None, enable_hinting=False,
-               presentational_hints=False):
+               presentational_hints=False, variables = None):
         """Lay out and paginate the document, but do not (yet) export it
         to PDF or another format.
 
@@ -143,7 +143,7 @@ class HTML(object):
 
         """
         return Document._render(
-            self, stylesheets, enable_hinting, presentational_hints)
+            self, stylesheets, enable_hinting, presentational_hints, variables)
 
     def write_pdf(self, target=None, stylesheets=None, zoom=1,
                   attachments=None, presentational_hints=False):

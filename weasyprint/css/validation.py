@@ -746,6 +746,8 @@ def validate_content_token(base_url, token):
                 if args[1] not in ('first', 'start', 'last', 'first-except'):
                     raise InvalidValues()
             return (name, args)
+        elif prototype == ('value', ['ident']):
+            return (name, args[0])
 
 
 def parse_function(function_token):
